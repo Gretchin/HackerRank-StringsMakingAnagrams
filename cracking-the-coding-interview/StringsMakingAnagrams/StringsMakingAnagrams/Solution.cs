@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace StringsMakingAnagrams
 {
-    class Program
+    class Solution
     {
         static void Main(string[] args)
         {
             string a = Console.ReadLine();
             string b = Console.ReadLine();
             Console.WriteLine(Anag(a, b));
+            Console.ReadLine();
         }
 
         //S4itaet skolko nujno udalit' simvolov 4tobi 'a' stala anagrammoi 'b'
