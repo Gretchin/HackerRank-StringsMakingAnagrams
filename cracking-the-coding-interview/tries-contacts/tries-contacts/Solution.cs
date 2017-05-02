@@ -11,15 +11,22 @@ class Solution
     {
         Dictionary<char, Node> table;
         bool finish;
+        int countOfAdded;
+
         public Node()
         {
             table = new Dictionary<char, Node>();
             finish = false;
+            countOfAdded = 0;
         }
         public void Add(string contact)
         {
             Node cur = this;
             int i;
+
+            Stack<Node> st = new Stack<Node>();
+            st.Push(cur);
+
             for (i = 0; i < contact.Length; i++)
             {
                 if (!cur.table.ContainsKey(contact[i]))
@@ -27,14 +34,23 @@ class Solution
                     Node temp = new Node();
                     cur.table.Add(contact[i], temp);
                     cur = temp;
+                    st.Push(cur);
                 }
                 else
                 {
                     cur = cur.table[contact[i]];
+                    st.Push(cur);
                     continue;
                 }
             }
-            cur.finish = true;
+            if (!cur.finish)
+            {
+                cur.finish = true;
+                while (st.Count != 0)
+                    st.Pop().countOfAdded++;
+            }
+            else
+                st = null;
         }
         public int Search(string contact)
         {
@@ -45,20 +61,8 @@ class Solution
                 if (!cur.table.ContainsKey(contact[i]))
                     return 0;
                 cur = cur.table[contact[i]];
-            }
-            int count = 0;
-            count += Counter(cur);
-
-            return count;
-        }
-
-        int Counter(Node cur)
-        {
-            int count = (cur.finish) ? 1 : 0;
-            if (cur.table.Count != 0)
-                foreach (Node node in cur.table.Values)
-                    count += Counter(node);
-            return count;
+            }            
+            return cur.countOfAdded;
         }
     }
 
